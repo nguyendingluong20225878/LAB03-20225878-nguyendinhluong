@@ -1,0 +1,122 @@
+1,jal function --> gọi hàm function
+
+#lệnh tiếp theo sau khi trở về từ hàm
+nop --> No operation "minh họa"
+
+function:
+#thân hàm
+nop
+jr $ra --> trở về địa chỉ được lưu trong $ra
+
+2, Sb $rt, offset($rs) 
+$rt: thanh ghi nguônd chứa gtri byte cần lưu trữ
+offset($rs): địa chỉ bộ nhớ đích 
+--> lưu trữ byte trong thanh ghi rt vào địa chỉ bộ nhớ tính từ offset+ nội dung thanh rs
+
+VD: sb $t0, 4($s0)--> t0=0x10010004(s0=0x10010000)
+
+3,  Thủ tục Go là đặt gtri 1 vào MOVING để Marsbot bắt đầu di chuyển
+    Thủ tục Stop là đặt gtri 0 vào MOVING để Marsbot dừng di chuyển
+    Thủ tục Track đưa 1 vào LEAVETRACK để Marsbot bắt đầu vẽ đường
+    Thủ tục Untrack đưa 0 vào LEAVETRACK để Marsbot dừng vẽ đường đi
+    Thủ tục Rotate là ghi giá trị góc trong a0 đưa và heading để xoay Marsbot
+4, Thanh $at là thanh ghi tạm thời
+
+5, KEYCODE: địa chỉ lưu mã ASCII từ bàn phím 
+   KEY_READY: địa chỉ của thanh ghi xác định xem có mã ASCII mới từ bàn phím ko
+   DISPLAY_CODE: mã ascii cần hiển thị,1byte
+   DISPLAY_READY: =1 nếu màn hình sẵn sàng để thực hiện , tự xóa sau khi sw
+6,Khi có 1 Exception xảy ra, MIPS nhảy tới 0x80000180--> thực hiện ctrinh con ngắt
+-bộ đồng xử lý C0, $12 sẽ bật bit 1
+-bộ đồng xử lý C0, $13 sẽ thay đổi -các bit 2~6 cho bt nguyên nhân ngắt
+-bộ đồng xử lý C0, thanh $14 chứa địa chỉ kế tiếp của chương trình, quay về sau khi xử lý đoạn Exception xong
+-nếu ko có lệnh ở 0x80000180(.ktext) thì ctr báo lỗi và tự kết thúc
+- kết thúc, dùng lệnh eret để quay lại ctr chính , eret gấn nd PC= gtri $14
+7,  lệnh tăng địa chỉ thanh ghi PC
+mfc0 $at, $14
+addi $at, $at, 4
+mtco $at, $14
+8, các bit 8-15 của thanh $13 xác định nguyên nhân gây ra ngắt 
+9, CÁCH THỨC VIẾT CHƯƠNG TRÌNH PHỤC VỤ NGẮT:
+Dùng 1 trong các phương pháp sau :
+-vt ctrc phục vụ ngắt trong cùng 1 file nguồn
+-vt ctrc ngắt trong 1 file độc lập, lưu trữ trong 1 thư mục vs ctr chính
+-vt ctrc ... file độc lập, lưu trữ trong 1 thư mục bất kì
+10, BUG: giữa 2 lệnh syscall và jump có nop nếu ko vc ghi nhận gtri thanh ghi PC vào EPC bị sai
+11,  tính năng digital lab sim 
++ Mô phỏng CPU MIPS--> cho phép chạy mã assembly 
++ Bộ nhớ và thanh ghi --> cho phép xem và thay đổi gtri của các thanh ghi (vd:$t0,$a0,$v0) và vùng nhớ trong mtr mô phỏng
++ Các hàm syscall:in đọc kthuc từ bàn phím
++ mã hóa và debug
+
+12, B1: nhập mã lệnh từ Digital Lab Sim
+B2: Chờ nhận tín hiệu phím từ bàn phím vào Keyboard & Display MMIO Simulator
+B3: Nếu nhấn enter và đến các bước thực thi lệnh , Marsbot sẽ yêu cầu in ra mã lệnh đã nhập xuống màn hình hiển thị
+
+13. Hàm main
+cbi môi trường để đọc bàn phím và xdd khi nào sẵn sàng
+14.waitkey +nạp keyready vào t5, nếu t5=0 chờ phím dc ấn , nhảy tới wait neeus tiếp tục =0
+15. readkey +nạp keycode vào t6
+nếu gtri là 127 thì xóa
+nếu gtri ko phải là enter thì qlaij
+16.checkcontrolcode
++đạt leght vào s2
++nạp gtri leght vào s2
++nếu leght khác 3-> nhảy đén error // định dạng dlieu
++đạt địa chỉ move vào s3
++gọi hàm iscontrolcode
++nếu t0==1 nhảy go
+các th khác tương tự
+17. printcontrolCode: 
++set syscall code:in xâu kí tự
++nạp điacj chỉ inputcontrolcode vào a0
+18.delete: 
++gọi hàm removecontrolcode để xóa
++j lôp --> quay lại loop tiêpd tục đọc
++j loop--> quay lại 1 lần nữa
+18. iscontrolcode
++ dịch ngăn xếp lên 4 byte để luuw trữ dx liệu
++luuw t1 vào đỉnh ngăn xếp
++ dịch con trỏ ngăn xếp lên 4 bite
++lưu s1 vaod đỉnh
+... luuw t2 và t3 vào đỉnh ngăn xếp 
+--> Đoạn code này thực hiện việc lưu các thanh ghi t1 s1 s2 s3 vào ngăn xếp để backup trạng thái trc khi thực hiện thay đổi
+
++khởi tại t1=-1
+t0=0
+gán s1-inputcontrolcode
+lôptocheck:
+
+tăng chỉ số lên 1 (i++)
+t2=input+i(địa chỉ thanh thứ i)
+lb :lấy kí tự thứ i trong chuỗi
+add t3: địa chỉ thứ i trong chuỗi S
+lb t3: lấy kí tự thứ i trong chuỗi S
+nếu input khác vs kí tự tương ứng trong S nảy isnot
+nếu chưa hết 3 kí tự , tiếp tục vòng lại
+--> ktra chuỗi input có giống vvs chuỗi S ở các vị trí ko nếu khác nhảy isnotcontrolcode, sau đó ktra hết 3 kí tự
+-restore lw$t3 0($sp)
+....addi $sp, $sp,-4--> khôi phục giá trị t1 s1 s2 s3 từ ngăn xếp sau khi xử lý
+
+- XỬ LÝ KẾT QUẢ: cập nhập t0=0
+nhảy về return address
+nếu input giống S ctrinh trsr về 1 trong thanh ghi t0 và ngược lại trả 0
+
+19. ISNOTCONTROLCODE:
+ input ko giống với S trả về t0=0
+
+20.errorMESSAGE--> Hiển thị tb lỗi khi mã ko hợp lệ:
+li v0,4 hirnt thị input
+li vo , 5 kết thúc ctrh vs mã thoát
+nhảy delete
+
+21. removeCONTROLCODE:removeControlCode có nhiệm vụ xóa chuỗi inputControlCode bằng cách gán các ký tự của nó thành ký tự kết thúc chuỗi '\0'.
+22. storePath:Lưu thông tin về đường đi của MARSBOT vào mảng path
+
+23. prossesing
+lưu s1 vào pathleght
+s2 vào pathleght+4
+s4 vào pathleght +8
+add s3 s3 12 : tăng 12 vì 3*4
+luuw ại gtri mới
+

@@ -1,0 +1,73 @@
+java
+1. Quy ước lập trình : 
+-Quy ước đặt tên:
++Bắt đầu bằng chữ cái
++package: chữ thường 
+VD: the.ẽamplae
++ Class: Vt hoa chữ cái đầu
+VD: FirstName
++ Phương thức/ Thuộc tính/ trường dl: bắt đầu bằng chữ thường, từ tiếp theo vt hoa chữ cái đầu tiên
+VD:vExemplate
++ HẰng số: vt hoa hết
+VD:EMPLY
+-Keyword: if else float for ,....
+
+2.Kiểu dữ liệu
+-Kiểu dl chặt :
++ Primitive(DL nguyên thủy- chứa 1 gtri đơn): "=" -> single value
+int, float, char, logic
++ Reference(DL tham chiếu-chứa nhiều gtri khác nhau): "=new"
+array : cùng kiểu dl dùng array 
+object : khác kiểu dl dùng object
+
+2.1 primitive:
+int : byte (size 1 byte, -2^7->2^7-1)
+      short(size 2 bytes,-2^15->2^15-1)
+      int  (size 4 byte, -2^31->2^31-1)
+      long  (size 8 byte, -2^63->2^63-1)
+float : float (size 4 byte,  +-1.4x10^-45->+-3.4x10^38)
+        double (size 8 byte, +-4.9x10^-324->+-1.8x10^308)
+Charater: char (size 2 bytes,\u0000->\uFFFF)
+Boolean:boolean(size 1 byte, true/false)
+
+2.2 literal
+-Biểu diễn gtri hằng
++số nguyên: thường, o32,ox
++long: 26L or 26l
++ float : end=F
++double: end=D
++ko có gì thì mặc định double: 7->7D
+
+
+- Kí tự đặc biệt:....
+
+2.3 casting
+ex:
+long p=(long)12345,56 ->p== 12345
+int g=p;--> lỗi
+char c='t'//2byte
+int j= 'c'//4byte
+short k =c //2 byte--> phải eps kiểu tường minh
+short k =(short)c
+float f=12.35--> phải ép--> float f=12.35f
+
+-comment: javadoc=**
+
+3.operator: ...
+4. control
+5. array
+datatype[] arrayName = new datatype[array_size]
+datatype arrayName[] = new datatype[array_size]
+
+EX: char c[] =new char[12]
+
+Cú pháp: datatype[] arrayName= {initial_values}
+EX: int[] numbers ={10,9,8,7,6}
+
+
+Version control:
+ 
+
+ 
+
+

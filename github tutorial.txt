@@ -1,0 +1,18 @@
+*) Tạo project mới:
+- Download git về máy, link: https://git-scm.com/downloads
+- Vào GitHub, tạo repo mới, điền tên
+- Làm bài tập trên máy, tạo thư mục trùng tên với tên repo. Trong thư mục đó, tổ chức các file theo như hướng dẫn trong đề bài.
+- Thực hiện lần lượt theo các câu lệnh sau:
++) git init
++) git add .
++) git commit -m "first commit"
++) git branch -M main
++) git remote add origin <<link git của các bạn>>
++) git push -u origin main
+
+*) Update file mới lên GitHub:
+- Tạo file mới trong project
+- Mở git bash và thực hiện các câu lệnh sau:
++) git add .
++) git commit -m "comment"
++) git push origin main

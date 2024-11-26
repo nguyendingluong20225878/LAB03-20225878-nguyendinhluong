@@ -1,0 +1,11 @@
++) Điểm giống nhau:
+
+Cả Abstract Class và Interface đều là những khái niệm trừu tượng, tức là không thể tạo ra đối tượng trực tiếp từ chúng. Thay vào đó, cần có các lớp con cụ thể để thực hiện hoặc kế thừa từ chúng. Cả hai đều có thể chứa các phương thức mà không có phần thân (gọi là phương thức trừu tượng), cho phép các lớp con tự quyết định cách thực hiện các phương thức đó.
+
++) Điểm khác nhau:
+
+Abstract Class thì thích hợp hơn khi muốn cung cấp một phần cài đặt mặc định cho các lớp con. Ngược lại, Interface chủ yếu được dùng để định nghĩa các phương thức mà nhiều lớp khác nhau có thể thực hiện theo nhiều cách khác nhau. Interface giúp giải quyết vấn đề đa kế thừa, tức là cho phép một lớp có thể thực hiện nhiều Interface mà không bị rắc rối hay gặp xung đột như khi kế thừa từ nhiều lớp.
+
++) Về việc giải quyết vấn đề đa kế thừa trong Java:
+
+Java không cho phép bạn kế thừa từ nhiều lớp vì điều này có thể gây ra sự nhầm lẫn khi các lớp cha có phương thức trùng tên. Tuy nhiên, Java cho phép một lớp thực hiện nhiều Interface. Bởi vì Interface chỉ chứa các phương thức trừu tượng hoặc phương thức mặc định không có trạng thái, nên việc này giúp tránh được những xung đột không mong muốn.
